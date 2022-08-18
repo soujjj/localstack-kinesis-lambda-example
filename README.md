@@ -1,0 +1,1 @@
+# localstack-kinesis-lambda-example
