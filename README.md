@@ -61,8 +61,24 @@ docker-compose exec localstack awslocal lambda create-event-source-mapping \
 
 invoke lambda function
 ```bash
-docker-compose exec localstack bash
-awslocal lambda invoke --function-name test-kinesis-trigger --payload '{"Records": ["hello", "world"]}' /dev/null --log-type Tail --query 'LogResult' --output text |  base64 -d
+docker-compose exec localstack bash -c "
+awslocal lambda invoke --function-name test-kinesis-trigger --payload '
+{
+  \"Records\": [
+    {
+      \"kinesis\": {
+        \"data\": \"MeOBpOebruOBruODh+ODvOOCvw==\"
+      }
+    },
+    {
+      \"kinesis\": {
+        \"data\": \"MuOBpOebruOBruODh+ODvOOCvw==\"
+      }
+    }
+  ]
+}
+' /dev/null --log-type Tail --query 'LogResult' --output text |  base64 -d
+"
 ```
 
 tail follow logs lambda
