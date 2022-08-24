@@ -28,20 +28,27 @@ confirm kinesis stream
 docker-compose exec localstack awslocal kinesis describe-stream-summary --stream-name test-stream
 ```
 
+put record kinesis stream
+```
+docker-compose exec localstack awslocal kinesis put-records --cli-input-json file:///producer/put_records.json
+```
+
 create lambda function
 ```bash
-docker-compose exec localstack bash
+docker-compose exec localstack bash -c '
 cd /consumer
 zip -r function.zip index.js node_modules package.json package-lock.json
-awslocal lambda create-function --function-name="test-kinesis-trigger" --runtime=nodejs12.x --role="arn:aws:iam::123456789012:role/service-role/lambda-sample-role" --handler=index.handler --zip-file fileb://function.zip 
+awslocal lambda create-function --function-name="test-kinesis-trigger" --runtime=nodejs12.x --role="arn:aws:iam::123456789012:role/service-role/lambda-sample-role" --handler=index.handler --zip-file fileb:///consumer/function.zip
+'
 ```
 
 update lambda function
 ```bash
-docker-compose exec localstack bash
+docker-compose exec localstack bash -c '
 cd /consumer
 zip -r function.zip index.js node_modules package.json package-lock.json
-awslocal lambda update-function-code --function-name="test-kinesis-trigger" --zip-file fileb://function.zip
+awslocal lambda update-function-code --function-name="test-kinesis-trigger" --zip-file fileb:///consumer/function.zip
+'
 ```
 
 set kinesis stream event trigger
