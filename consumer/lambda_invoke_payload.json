@@ -1,0 +1,36 @@
+{
+  "Records": [
+    {
+      "eventID": "shardId-000000000000:49632634083068882301228510190971104359712297255469842434",
+      "eventSourceARN": "arn:aws:kinesis:us-east-1:000000000000:stream/test-stream",
+      "eventSource": "aws:kinesis",
+      "eventVersion": "1.0",
+      "eventName": "aws:kinesis:record",
+      "invokeIdentityArn": "arn:aws:iam::000000000000:role/lambda-role",
+      "awsRegion": "us-east-1",
+      "kinesis": {
+        "sequenceNumber": "49632634083068882301228510190971104359712297255469842434",
+        "approximateArrivalTimestamp": 1661326909176,
+        "data": "MeOBpOebruOBruODh+ODvOOCvw==",
+        "partitionKey": "pk-1",
+        "encryptionType": "NONE"
+      }
+    },
+    {
+      "eventID": "shardId-000000000000:49632634083068882301228510190972313285531911884644548610",
+      "eventSourceARN": "arn:aws:kinesis:us-east-1:000000000000:stream/test-stream",
+      "eventSource": "aws:kinesis",
+      "eventVersion": "1.0",
+      "eventName": "aws:kinesis:record",
+      "invokeIdentityArn": "arn:aws:iam::000000000000:role/lambda-role",
+      "awsRegion": "us-east-1",
+      "kinesis": {
+        "sequenceNumber": "49632634083068882301228510190972313285531911884644548610",
+        "approximateArrivalTimestamp": 1661326909176,
+        "data": "MuOBpOebruOBruODh+ODvOOCvw==",
+        "partitionKey": "pk-2",
+        "encryptionType": "NONE"
+      }
+    }
+  ]
+}
