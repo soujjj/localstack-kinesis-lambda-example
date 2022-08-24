@@ -1,0 +1,13 @@
+{
+  "Records": [
+    {
+      "Data": "1つ目のデータ",
+      "PartitionKey": "pk-1"
+    },
+    {
+      "Data": "2つ目のデータ",
+      "PartitionKey": "pk-2"
+    }
+  ],
+  "StreamName": "test-stream"
+}
