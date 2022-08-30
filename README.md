@@ -18,14 +18,18 @@ region = us-east-1
 output = text
 ```
 
-create kinesis stream
-```
-docker-compose exec localstack awslocal kinesis create-stream --stream-name test-stream --shard-count 1
+init
+```bash
+$ zip -r ./stacks/function.zip ./consumer/index.js
+$ docker-compose up -d
+$ docker-compose run --rm terraform init
+$ docker-compose run --rm terraform plan
+$ docker-compose run --rm terraform apply --auto-approve
 ```
 
 confirm kinesis stream
 ```
-docker-compose exec localstack awslocal kinesis describe-stream-summary --stream-name test-stream
+aws kinesis --profile localstack --endpoint http://localhost:4566 describe-stream-summary --stream-name local-stream
 ```
 
 put record kinesis stream
@@ -33,40 +37,23 @@ put record kinesis stream
 docker-compose exec localstack awslocal kinesis put-records --cli-input-json file:///producer/put_records.json
 ```
 
-create lambda function
-```bash
-docker-compose exec localstack bash -c '
-cd /consumer
-zip -r function.zip index.js node_modules package.json package-lock.json
-awslocal lambda create-function --function-name="test-kinesis-trigger" --runtime=nodejs12.x --role="arn:aws:iam::123456789012:role/service-role/lambda-sample-role" --handler=index.handler --zip-file fileb:///consumer/function.zip
-'
-```
-
 update lambda function
 ```bash
 docker-compose exec localstack bash -c '
 cd /consumer
 zip -r function.zip index.js node_modules package.json package-lock.json
-awslocal lambda update-function-code --function-name="test-kinesis-trigger" --zip-file fileb:///consumer/function.zip
+awslocal lambda update-function-code --function-name="=local-lambda" --zip-file fileb:///consumer/function.zip
 '
-```
-
-set kinesis stream event trigger
-```bash
-docker-compose exec localstack awslocal lambda create-event-source-mapping \
---function-name test-kinesis-trigger \
---batch-size 500 \
---event-source-arn arn:aws:kinesis:us-east-1:000000000000:stream/test-stream
 ```
 
 invoke lambda function
 ```bash
 docker-compose exec localstack bash -c "
-awslocal lambda invoke --function-name test-kinesis-trigger --payload file:///consumer/lambda_invoke_payload.json /dev/null --log-type Tail --query 'LogResult' --output text |  base64 -d
+awslocal lambda invoke --function-name local-lambda --payload file:///consumer/lambda_invoke_payload.json /dev/null --log-type Tail --query 'LogResult' --output text |  base64 -d
 "
 ```
 
 tail follow logs lambda
 ```
-aws logs --profile localstack --endpoint-url=http://localhost:4566  tail /aws/lambda/test-kinesis-trigger --follow 
+aws logs --profile localstack --endpoint-url=http://localhost:4566  tail /aws/lambda/local-lambda --follow 
 ```

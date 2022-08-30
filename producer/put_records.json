@@ -9,5 +9,5 @@
       "PartitionKey": "pk-2"
     }
   ],
-  "StreamName": "test-stream"
+  "StreamName": "local-stream"
 }
