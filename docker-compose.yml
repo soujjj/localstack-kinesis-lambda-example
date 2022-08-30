@@ -7,12 +7,15 @@ services:
     ports:
       - "4566:4566" # logs
       - "4568:4568" # kinesis
+      - "4572:4572" # S3
+      - "4573:4573" # firehose
       - "4574:4574" # lambda
     environment:
       - PORT_WEB_UI=9000
       - DOCKER_HOST=unix:///var/run/docker.sock
+      - TMPDIR=/private$TMPDIR
       - DATA_DIR=/tmp/localstack/data
-      - SERVICES=kinesis,lambda
+      - SERVICES=kinesis,lambda,s3,firehose
     volumes:
       - ./consumer:/consumer
       - ./producer:/producer
