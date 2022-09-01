@@ -11,7 +11,7 @@
       "kinesis": {
         "sequenceNumber": "49632634083068882301228510190971104359712297255469842434",
         "approximateArrivalTimestamp": 1661326909176,
-        "data": "MeOBpOebruOBruODh+ODvOOCvw==",
+        "data": "TGFtYmRhIGludm9rZeOBrjHjgaTnm67jga7jg4fjg7zjgr8=",
         "partitionKey": "pk-1",
         "encryptionType": "NONE"
       }
@@ -27,7 +27,7 @@
       "kinesis": {
         "sequenceNumber": "49632634083068882301228510190972313285531911884644548610",
         "approximateArrivalTimestamp": 1661326909176,
-        "data": "MuOBpOebruOBruODh+ODvOOCvw==",
+        "data": "TGFtYmRhIGludm9rZeOBrjLjgaTnm67jga7jg4fjg7zjgr8=",
         "partitionKey": "pk-2",
         "encryptionType": "NONE"
       }
