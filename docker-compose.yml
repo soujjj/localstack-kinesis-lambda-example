@@ -11,7 +11,7 @@ services:
       - DOCKER_HOST=unix:///var/run/docker.sock
       - TMPDIR=/private$TMPDIR
       - DATA_DIR=/tmp/localstack/data
-      - SERVICES=kinesis,lambda,s3,firehose
+      - SERVICES=kinesis,lambda,s3,firehose,sqs
     volumes:
       - ./consumer:/consumer
       - ./producer:/producer

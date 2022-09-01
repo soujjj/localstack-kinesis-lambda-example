@@ -20,7 +20,7 @@ output = text
 
 init
 ```bash
-$ zip -r ./stacks/function.zip ./consumer/index.js
+$ make -C consumer package
 $ docker-compose up -d
 $ docker-compose run --rm terraform init
 $ docker-compose run --rm terraform plan
@@ -34,16 +34,13 @@ aws kinesis --profile localstack --endpoint http://localhost:4566 describe-strea
 
 put record kinesis stream
 ```
-docker-compose exec localstack awslocal kinesis put-records --cli-input-json file:///producer/put_records.json
+make kinesis-put-records
 ```
 
-update lambda function
+lambda function package & deploy
 ```bash
-docker-compose exec localstack bash -c '
-cd /consumer
-zip -r function.zip index.js node_modules package.json package-lock.json
-awslocal lambda update-function-code --function-name="=local-lambda" --zip-file fileb:///consumer/function.zip
-'
+make -C consumer package
+make -C consumer deploy
 ```
 
 invoke lambda function
@@ -55,5 +52,5 @@ awslocal lambda invoke --function-name local-lambda --payload file:///consumer/l
 
 tail follow logs lambda
 ```
-aws logs --profile localstack --endpoint-url=http://localhost:4566  tail /aws/lambda/local-lambda --follow 
+make lambda-tail-log
 ```

@@ -4,6 +4,14 @@ resource "aws_kinesis_stream" "local_stream" {
   retention_period = 168
 }
 
+resource "aws_sqs_queue" "local_lambda_mapping_failre_sqs_fifo" {
+  name = "local-lambda-mapping-failre-sqs.fifo"
+  fifo_queue = true
+  content_based_deduplication = true
+  message_retention_seconds = 345600
+  visibility_timeout_seconds = 120
+}
+
 resource "aws_lambda_event_source_mapping" "local_mapping" {
   event_source_arn                   = aws_kinesis_stream.local_stream.arn
   function_name                      = aws_lambda_function.local_lambda.arn
@@ -11,14 +19,20 @@ resource "aws_lambda_event_source_mapping" "local_mapping" {
   maximum_retry_attempts             = 1
   batch_size                         = 100
   maximum_batching_window_in_seconds = 5
+  destination_config {
+    on_failure {
+      destination_arn = aws_sqs_queue.local_lambda_mapping_failre_sqs_fifo.arn
+    }
+  }
 }
 
 resource "aws_lambda_function" "local_lambda" {
-  filename      = "function.zip"
+  filename      = "handler.zip"
   function_name = "local-lambda"
   role          = aws_iam_role.local_role.arn
-  handler       = "index.handler"
-  runtime       = "nodejs12.x"
+  handler       = "handler"
+  runtime       = "go1.x"
+  timeout = 60
 }
 
 resource "aws_iam_role" "local_role" {
