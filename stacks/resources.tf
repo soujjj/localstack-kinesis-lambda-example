@@ -8,7 +8,7 @@ resource "aws_sqs_queue" "local_lambda_mapping_failre_sqs_fifo" {
   name = "local-lambda-mapping-failre-sqs.fifo"
   fifo_queue = true
   content_based_deduplication = true
-  message_retention_seconds = 345600
+  message_retention_seconds = 345600 # 4 days
   visibility_timeout_seconds = 120
 }
 
@@ -16,7 +16,7 @@ resource "aws_lambda_event_source_mapping" "local_mapping" {
   event_source_arn                   = aws_kinesis_stream.local_stream.arn
   function_name                      = aws_lambda_function.local_lambda.arn
   starting_position                  = "LATEST"
-  maximum_retry_attempts             = 1
+  maximum_retry_attempts             = 2
   batch_size                         = 100
   maximum_batching_window_in_seconds = 5
   destination_config {

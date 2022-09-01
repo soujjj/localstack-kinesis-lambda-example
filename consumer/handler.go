@@ -12,7 +12,7 @@ func main() {
 	lambda.Start(handler)
 }
 
-func handler(_ context.Context, kinesisEvent events.KinesisEvent) error {
+func handler(_ context.Context, kinesisEvent events.KinesisEvent) (string, error) {
 	for _, record := range kinesisEvent.Records {
 		kinesisRecord := record.Kinesis
 		dataBytes := kinesisRecord.Data
@@ -21,8 +21,8 @@ func handler(_ context.Context, kinesisEvent events.KinesisEvent) error {
 		log.Printf("%s Data = %s \n", record.EventName, dataText)
 		if dataText == "InvalidData" {
 			log.Printf("%s Invalid!!! Data = %s \n", record.EventName, dataText)
-			return errors.New("Invalid!!!")
+			return "error", errors.New("Invalid!!!")
 		}
 	}
-	return nil
+	return "success", nil
 }
