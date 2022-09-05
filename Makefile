@@ -4,12 +4,12 @@ kinesis-put-records:
 lambda-tail-log:
 	aws logs --profile localstack --endpoint-url=http://localhost:4566  tail /aws/lambda/local-lambda --follow
 
-confirm-sqs-message:
+show-sqs-message-count:
 	aws sqs \
 		--profile localstack \
 		--endpoint-url=http://localhost:4566 \
 		get-queue-attributes \
-		--queue-url http://localhost:4566/000000000000/local-lambda-mapping-failre-sqs.fifo \
+		--queue-url http://localhost:4566/000000000000/local-lambda-mapping-failre-sqs \
 		--attribute-names ApproximateNumberOfMessages \
 		--query 'Attributes.ApproximateNumberOfMessages' \
 		--output text

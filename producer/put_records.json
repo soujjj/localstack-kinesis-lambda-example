@@ -1,11 +1,15 @@
 {
   "Records": [
     {
-      "Data": "1つ目のデータ",
+      "Data": "first data",
       "PartitionKey": "pk-1"
     },
     {
-      "Data": "2つ目のデータ",
+      "Data": "second data",
+      "PartitionKey": "pk-2"
+    },
+    {
+      "Data": "3 data",
       "PartitionKey": "pk-2"
     }
   ],
